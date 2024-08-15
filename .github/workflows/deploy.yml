@@ -39,6 +39,9 @@ jobs:
           echo "BE_ADMIN_PASSWORD=admin" >> .env
           echo "DJANGO_SECRET_KEY=Django secret key" >> .env
 
+    - name: List files for debugging
+      run: |
+          ls -la
           
     - name: Run Django management commands
       run: |
@@ -49,6 +52,7 @@ jobs:
           pip install django-nested-admin
           pip install openai
           pip install -r requirements.txt
+          python manage.py collectstatic --noinput
           python manage.py makemigrations
           python manage.py migrate
           pip install gunicorn
