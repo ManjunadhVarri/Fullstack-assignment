@@ -41,7 +41,7 @@ jobs:
           
     - name: Run Django management commands
       run: |
-          source ../venv/bin/activate
+          source venv/bin/activate
           python manage.py check  
           pip install python-dotenv
           pip install django-cors-headers
