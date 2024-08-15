@@ -76,21 +76,27 @@ jobs:
 
     - name: Configure Nginx
       run: |
-        echo 'server {
-            listen 80;
-            server_name ec2-16-171-143-63.eu-north-1.compute.amazonaws.com;
-            location / {
-                proxy_pass http://127.0.0.1:8000;
-                proxy_set_header Host $host;
-                proxy_set_header X-Real-IP $remote_addr;
-                proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
-                proxy_set_header X-Forwarded-Proto $scheme;
-            }
-        }' | sudo tee /etc/nginx/sites-available/django
+          echo "server_names_hash_bucket_size 128;" | sudo tee -a /etc/nginx/nginx.conf
+          sudo tee /etc/nginx/sites-available/django <<EOF
+          server {
+              listen 80;
+              server_name ec2-16-171-143-63.eu-north-1.compute.amazonaws.com;
 
-        sudo ln -s /etc/nginx/sites-available/django /etc/nginx/sites-enabled
-        sudo nginx -t
-        sudo systemctl restart nginx
+              location / {
+                  proxy_pass http://127.0.0.1:8000;
+                  proxy_set_header Host \$host;
+                  proxy_set_header X-Real-IP \$remote_addr;
+                  proxy_set_header X-Forwarded-For \$proxy_add_x_forwarded_for;
+                  proxy_set_header X-Forwarded-Proto \$scheme;
+              }
+          }
+          EOF
+          
+          # Enable the site configuration and reload Nginx
+          sudo ln -s /etc/nginx/sites-available/django /etc/nginx/sites-enabled/
+          sudo nginx -t
+          sudo systemctl reload nginx
+
 
     - name: Set up Node.js
       uses: actions/setup-node@v2
