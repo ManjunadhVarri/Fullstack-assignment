@@ -76,7 +76,10 @@ jobs:
 
     - name: Configure Nginx
       run: |
-          echo "server_names_hash_bucket_size 128;" | sudo tee -a /etc/nginx/nginx.conf
+         sudo sed -i '/^server_names_hash_bucket_size/d' /etc/nginx/nginx.conf
+          echo 'server_names_hash_bucket_size 128;' | sudo tee -a /etc/nginx/nginx.conf
+
+          # Write server block configuration
           sudo tee /etc/nginx/sites-available/django <<EOF
           server {
               listen 80;
