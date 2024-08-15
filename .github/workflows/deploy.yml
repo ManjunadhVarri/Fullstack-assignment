@@ -28,7 +28,7 @@ jobs:
         cd fullstack-assignment-main/backend
         python3 -m venv venv
         source venv/bin/activate
-        /home/ec2-user/fullstack-assignment/backend/venv/bin/python3 -m pip install --upgrade pip
+        python3 -m pip install --upgrade pip
         pip install django
         
     - name: Create .env file
