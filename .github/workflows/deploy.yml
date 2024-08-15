@@ -20,12 +20,11 @@ jobs:
 
     - name: Install Python dependencies
       run: |
-        cd fullstack-assignment-main/backend/backend
+        cd fullstack-assignment-main/backend
         python -m pip install --upgrade pip
 
     - name: Build and deploy Django
       run: |
-        cd fullstack-assignment-main/backend
         python3 -m venv venv
         source venv/bin/activate
         python3 -m pip install --upgrade pip
@@ -33,7 +32,6 @@ jobs:
         
     - name: Create .env file
       run: |
-          cd Fullstack-assignment/fullstack-assignment-main/backend
           echo "FRONTEND_URL=http://127.0.0.1:3000" >> .env
           echo "BACKEND_URL=http://127.0.0.1:8000" >> .env
           echo "BE_ADMIN_EMAIL=admin@admin.com" >> .env
@@ -43,7 +41,6 @@ jobs:
           
     - name: Run Django management commands
       run: |
-          cd Fullstack-assignment/fullstack-assignment-main/backend
           source ../venv/bin/activate
           python manage.py check  
           pip install python-dotenv
@@ -82,7 +79,7 @@ jobs:
 
     - name: Install Next.js dependencies and build
       run: |
-        cd fullstack-assignment-main/frontend
+        cd ../frontend
         npm install
         npm run build
 
@@ -94,7 +91,7 @@ jobs:
         ssh -i $SSH_PRIVATE_KEY ec2-user@$SERVER_IP << 'EOF'
           cd /path/to/your/project
           git pull origin main
-          cd fullstack-assignment-main/backend
+          cd ../backend
           source venv/bin/activate
           pip install -r requirements.txt
           python manage.py collectstatic --noinput
