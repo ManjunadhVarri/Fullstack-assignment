@@ -27,6 +27,7 @@ jobs:
       run: |
         python3 -m venv venv
         source venv/bin/activate
+        pip freeze > requirements.txt
         python3 -m pip install --upgrade pip
         pip install django
         
@@ -47,6 +48,7 @@ jobs:
           pip install djangorestframework
           pip install django-nested-admin
           pip install openai
+          pip install -r requirements.txt
           python manage.py makemigrations
           python manage.py migrate
           pip install gunicorn
