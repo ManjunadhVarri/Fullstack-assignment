@@ -49,6 +49,7 @@ jobs:
           
     - name: Run Django management commands
       run: |
+          cd Fullstack-assignment/fullstack-assignment-main/backend
           source venv/bin/activate 
           pip install python-dotenv
           pip install django-cors-headers
