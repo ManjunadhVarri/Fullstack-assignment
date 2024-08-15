@@ -12,6 +12,29 @@ jobs:
     steps:
     - name: Checkout code
       uses: actions/checkout@v2
+      
+    - name: List root directory
+      run: |
+          echo "Listing root directory"
+          ls -la
+
+    - name: List Fullstack-assignment directory
+      run: |
+          echo "Listing Fullstack-assignment directory"
+          cd Fullstack-assignment
+          ls -la
+
+    - name: List fullstack-assignment-main directory
+      run: |
+          echo "Listing fullstack-assignment-main directory"
+          cd fullstack-assignment-main
+          ls -la
+
+    - name: List backend directory
+      run: |
+          echo "Listing backend directory"
+          cd backend
+          ls -la
 
     - name: Set up Python
       uses: actions/setup-python@v2
