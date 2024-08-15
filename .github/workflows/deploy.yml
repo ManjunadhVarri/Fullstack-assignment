@@ -27,7 +27,7 @@ jobs:
     - name: List backend directory
       run: |
           echo "Listing backend directory"
-          cd backend
+          cd fullstack-assignment-main/backend
           ls -la
 
     - name: Set up Python
