@@ -22,7 +22,6 @@ jobs:
       run: |
         cd backend
         python -m pip install --upgrade pip
-        pip install -r requirements.txt
 
     - name: Build and deploy Django
       run: |
@@ -37,8 +36,7 @@ jobs:
       run: |
         echo 'server {
             listen 80;
-            server_name ec2-16-171-20-114.eu-north-1.compute.amazonaws.com;  # replace with your EC2 DNS
-
+            server_name ec2-16-171-143-63.eu-north-1.compute.amazonaws.com
             location / {
                 proxy_pass http://127.0.0.1:8000;
                 proxy_set_header Host $host;
