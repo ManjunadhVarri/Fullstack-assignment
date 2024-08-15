@@ -26,11 +26,33 @@ jobs:
     - name: Build and deploy Django
       run: |
         cd fullstack-assignment-main/backend
-        python manage.py collectstatic --noinput
-        python manage.py makemigrations
-        python manage.py migrate
-        pip install gunicorn
-        gunicorn --bind 0.0.0.0:8000 fullstack_assignment.wsgi:application &
+        python3 -m venv venv
+        source venv/bin/activate
+        /home/ec2-user/fullstack-assignment/backend/venv/bin/python3 -m pip install --upgrade pip
+        pip install django
+     - name: Create .env file
+        run: |
+          cd Fullstack-assignment/fullstack-assignment-main/backend
+          echo "FRONTEND_URL=http://127.0.0.1:3000" >> .env
+          echo "BACKEND_URL=http://127.0.0.1:8000" >> .env
+          echo "BE_ADMIN_EMAIL=admin@admin.com" >> .env
+          echo "BE_ADMIN_PASSWORD=admin" >> .env
+          echo "DJANGO_SECRET_KEY=Django secret key" >> .env
+      - name: Run Django management commands
+        run: |
+          cd Fullstack-assignment/fullstack-assignment-main/backend
+          source ../venv/bin/activate
+          python manage.py check  
+          pip install python-dotenv
+          pip install django-cors-headers
+          pip install djangorestframework
+          pip install django-nested-admin
+          pip install openai
+          python manage.py collectstatic --noinput
+          python manage.py makemigrations
+          python manage.py migrate
+          pip install gunicorn
+          gunicorn --bind 0.0.0.0:8000 fullstack_assignment.wsgi:application &
 
     - name: Configure Nginx
       run: |
