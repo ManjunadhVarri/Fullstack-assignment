@@ -38,18 +38,10 @@ jobs:
           echo "BE_ADMIN_EMAIL=admin@admin.com" >> .env
           echo "BE_ADMIN_PASSWORD=admin" >> .env
           echo "DJANGO_SECRET_KEY=Django secret key" >> .env
-
-    - name: List files for debugging
-      run: |
-          ls -la
-          cd fullstack-assignment-main
-          ls -la
-          cd backend
-          ls -la
           
     - name: Run Django management commands
       run: |
-          cd Fullstack-assignment/fullstack-assignment-main/backend
+          ls-la
           source venv/bin/activate 
           pip install python-dotenv
           pip install django-cors-headers
