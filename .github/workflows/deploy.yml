@@ -41,6 +41,11 @@ jobs:
 
     - name: List files for debugging
       run: |
+          cd Fullstack-assignment
+          ls -la
+          cd fullstack-assignment-main
+          ls -la
+          cd backend
           ls -la
           
     - name: Run Django management commands
