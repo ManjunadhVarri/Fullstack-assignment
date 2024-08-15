@@ -125,7 +125,8 @@ jobs:
           chmod 600 ~/.ssh/id_rsa
           
           # Run deployment commands on the server
-          ssh -o StrictHostKeyChecking=no user@$SERVER_IP <<EOF
+          ssh-keyscan -H $SERVER_IP >> ~/.ssh/known_hosts
+          ssh -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null -o LogLevel=DEBUG user@$SERVER_IP "echo 'SSH connection successful'"
             # Check and create the project directory if it does not exist
             if [ ! -d "/path/to/your/project" ]; then
               echo "Directory /path/to/your/project does not exist. Creating it."
