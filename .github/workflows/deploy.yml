@@ -1,0 +1,85 @@
+ 
+name: Deploy
+
+on:
+  push:
+    branches:
+      - main  # Trigger deployment on push to the main branch
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v2
+
+    - name: Set up Python
+      uses: actions/setup-python@v2
+      with:
+        python-version: '3.x'
+
+    - name: Install Python dependencies
+      run: |
+        cd backend
+        python -m pip install --upgrade pip
+        pip install -r requirements.txt
+
+    - name: Build and deploy Django
+      run: |
+        cd backend
+        python manage.py collectstatic --noinput
+        python manage.py makemigrations
+        python manage.py migrate
+        pip install gunicorn
+        gunicorn --bind 0.0.0.0:8000 fullstack_assignment.wsgi:application &
+# Configure Nginx
+        echo 'server
+         {
+            listen 80;
+            server_name ec2-16-171-20-114.eu-north-1.compute.amazonaws.com;         # give your ec2 dns
+
+            location / {
+                proxy_pass http://127.0.0.1:8000;
+                proxy_set_header Host $host;
+                proxy_set_header X-Real-IP $remote_addr;
+                proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+                proxy_set_header X-Forwarded-Proto $scheme;
+            }
+          }' | sudo tee /etc/nginx/sites-available/django
+
+        sudo ln -s /etc/nginx/sites-available/django /etc/nginx/sites-enabled
+        sudo nginx -t
+        sudo systemctl restart nginx
+
+    - name: Set up Node.js
+      uses: actions/setup-node@v2
+      with:
+        node-version: '18'
+
+    - name: Install Next.js dependencies and build
+      run: |
+        cd frontend
+        npm install
+        npm run build
+
+    - name: Deploy to server
+      env:
+        SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
+        SERVER_IP: ${{ secrets.SERVER_IP }}
+      run: |
+        ssh -i $SSH_PRIVATE_KEY ec2-user@$SERVER_IP << 'EOF'
+          cd /path/to/your/project
+          git pull origin main
+          cd backend
+          source venv/bin/activate
+          pip install -r requirements.txt
+          python manage.py collectstatic --noinput
+          python manage.py migrate
+          python manage.py makemigrations
+          gunicorn --bind 0.0.0.0:8000 fullstack_assignment.wsgi:application &
+          cd ../frontend
+          npm install
+          npm run build
+          sudo systemctl restart nginx
+        EOF
