@@ -56,8 +56,8 @@ run: |
         python manage.py migrate
         pip install gunicorn
         gunicorn --bind 0.0.0.0:8000 fullstack_assignment.wsgi:application &
-    - name: Create .env file
-      run: |
+        - name: Create .env file
+           run: |
         cd fullstack-assignment-main/backend
         echo "FRONTEND_URL=http://127.0.0.1:3000" >> .env
         echo "BACKEND_URL=http://127.0.0.1:8000" >> .env
