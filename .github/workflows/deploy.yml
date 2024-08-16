@@ -76,14 +76,14 @@ jobs:
 
     - name: Configure Nginx
       run: |
-         sudo sed -i '/^server_names_hash_bucket_size/d' /etc/nginx/nginx.conf
+         sudo sed -i '/^_names_hash_bucket_size/d' /etc/nginx/nginx.conf
           echo 'server_names_hash_bucket_size 128;' | sudo tee -a /etc/nginx/nginx.conf
 
           # Write server block configuration
           sudo tee /etc/nginx/sites-available/django <<EOF
           server {
               listen 80;
-              server_name ec2-13-60-187-67.eu-north-1.compute.amazonaws.com;
+              server_name ec2-16-171-145-13.eu-north-1.compute.amazonaws.com;
 
               location / {
                   proxy_pass http://127.0.0.1:8000;
