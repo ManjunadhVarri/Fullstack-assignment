@@ -1,32 +1,32 @@
 name: Deploy
 
 on:
-push:
-branches:
-- main # Trigger deployment on push to the main branch
+  push:
+    branches:
+      - main  # Trigger deployment on push to the main branch
 
 jobs:
-deploy:
-runs-on: ubuntu-latest
+  deploy:
+    runs-on: ubuntu-latest
 
-steps:
-- name: Checkout code
-uses: actions/checkout@v2
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v2
 
-- name: List root directory
-run: |
-echo "Listing root directory"
-ls -la
-- name: List fullstack-assignment-main directory
-run: |
-echo "Listing fullstack-assignment-main directory"
-cd fullstack-assignment-main
-ls -la
-- name: List backend directory
-run: |
-echo "Listing backend directory"
-cd fullstack-assignment-main/backend
-ls -la
+    - name: List root directory
+      run: |
+        echo "Listing root directory"
+        ls -la
+    - name: List fullstack-assignment-main directory
+      run: |
+        echo "Listing fullstack-assignment-main directory"
+        cd fullstack-assignment-main
+        ls -la
+    - name: List backend directory
+      run: |
+        echo "Listing backend directory"
+        cd fullstack-assignment-main/backend
+        ls -la
 - name: Set up Python
 uses: actions/setup-python@v2
 with:
