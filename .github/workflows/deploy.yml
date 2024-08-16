@@ -112,40 +112,15 @@ jobs:
         npm install
         npm run build
 
+    
+           
     - name: Deploy to server
       env:
-       SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
-       SERVER_IP: ${{ secrets.SERVER_IP }}
+        SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
+        SERVER_IP: ${{ secrets.SERVER_IP }}
       run: |
-       mkdir -p ~/.ssh
+        mkdir -p ~/.ssh
         echo "${SSH_PRIVATE_KEY}" > ~/.ssh/id_rsa
         chmod 600 ~/.ssh/id_rsa
         ssh-keyscan -H $SERVER_IP >> ~/.ssh/known_hosts
-        ssh -vvv -o StrictHostKeyChecking=no user@$SERVER_IP "echo 'SSH connection successful'"
-        ssh -o StrictHostKeyChecking=no user@$SERVER_IP << 'EOF'
-          if [ ! -d "/path/to/your/project" ]; then
-            echo "Directory /path/to/your/project does not exist. Creating it."
-            mkdir -p /path/to/your/project
-          fi
-          cd /path/to/your/project
-          git pull origin main
-          if [ -d "fullstack-assignment-main/backend" ]; then
-            cd fullstack-assignment-main/backend
-            source venv/bin/activate
-            pip install -r requirements.txt
-            python manage.py collectstatic --noinput
-            python manage.py migrate
-            python manage.py makemigrations
-            gunicorn --bind 0.0.0.0:8000 fullstack_assignment.wsgi:application &
-          else
-            echo "Backend directory does not exist."
-          fi
-          if [ -d "fullstack-assignment-main/frontend" ]; then
-            cd ../frontend
-            npm install
-            npm run build
-          else
-            echo "Frontend directory does not exist."
-          fi
-          sudo systemctl restart nginx
-        EOF
+        ssh -o StrictHostKeyChecking=no user@$SERVER_IP "echo 'SSH connection successful'"
