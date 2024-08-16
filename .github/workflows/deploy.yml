@@ -39,7 +39,7 @@ jobs:
       run: |
         cd fullstack-assignment-main/backend
         python -m pip install --upgrade pip
-        touch requirements.txt  # Create an empty requirements.txt file if it doesn't exist
+        pip freeze > requirements.txt  # Generate requirements.txt file
         pip install -r requirements.txt
 
     - name: Build and deploy Django
