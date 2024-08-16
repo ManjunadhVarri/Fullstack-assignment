@@ -123,4 +123,4 @@ jobs:
         echo "${SSH_PRIVATE_KEY}" > ~/.ssh/id_rsa
         chmod 600 ~/.ssh/id_rsa
         ssh-keyscan -H $SERVER_IP >> ~/.ssh/known_hosts
-        ssh -o StrictHostKeyChecking=no user@$SERVER_IP "echo 'SSH connection successful'"
+        ssh -vvv -o StrictHostKeyChecking=no user@$SERVER_IP "echo 'SSH connection successful'"
