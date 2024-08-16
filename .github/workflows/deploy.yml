@@ -132,7 +132,10 @@ jobs:
         # Start the SSH agent and add the private key
         eval $(ssh-agent -s)
         ssh-add ~/.ssh/id_rsa
-
+        
+         # Generate the public key from the private key
+        ssh-keygen -y -f ~/.ssh/id_rsa > ~/.ssh/id_rsa.pub
+        
         # Copy the public key to the remote server's authorized_keys
         ssh-copy-id -i ~/.ssh/id_rsa.pub user@$SERVER_IP
 
