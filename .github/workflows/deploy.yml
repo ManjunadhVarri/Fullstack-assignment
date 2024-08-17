@@ -30,8 +30,18 @@ jobs:
       run: |
         cd fullstack-assignment-main/backend
         python -m pip install --upgrade pip
-        pip install -r requirements.txt
+        pip install -r requirements.txt || { echo "Failed to install dependencies"; exit 1; }
 
+
+    - name: Check Python and Pip Versions
+      run: |
+        source venv/bin/activate
+        python --version
+        pip --version
+        pip list
+
+
+    
     - name: Build and deploy Django
       run: |
         cd fullstack-assignment-main/backend
