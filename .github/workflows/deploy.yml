@@ -36,13 +36,13 @@ jobs:
       run: |
         cd fullstack-assignment-main/backend
         python -m pip install --upgrade pip
+        pip freeze > requirements.txt
+        pip install -r requirements.txt
     - name: Build and deploy Django
       run: |
         cd fullstack-assignment-main/backend
         python3 -m venv venv
         source venv/bin/activate
-        pip freeze > requirements.txt
-        pip install -r requirements.txt
         python3 -m pip install --upgrade pip
         pip install django
         
@@ -64,8 +64,6 @@ jobs:
           pip install djangorestframework
           pip install django-nested-admin
           pip install openai
-          pip install -r requirements.txt
-          python manage.py collectstatic --noinput
           python manage.py makemigrations
           python manage.py migrate
           pip install gunicorn
