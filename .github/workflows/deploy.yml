@@ -32,6 +32,21 @@ jobs:
         python -m pip install --upgrade pip
         pip install -r requirements.txt || { echo "Failed to install dependencies"; exit 1; }
 
+    - name: Create and activate virtual environment
+      run: |
+        cd fullstack-assignment-main/backend
+        python3 -m venv venv
+        source venv/bin/activate
+        python --version
+        pip --version
+
+
+        - name: Create virtual environment
+          run: |
+            cd fullstack-assignment-main/backend
+            python3 -m venv venv || { echo "Failed to create virtual environment"; exit 1; }
+            ls -la venv/bin
+
 
     
     - name: Build and deploy Django
@@ -46,14 +61,6 @@ jobs:
         python manage.py migrate
         pip install gunicorn
 
-
-    - name: Check Python and Pip Versions
-      run: |
-        source venv/bin/activate
-        python --version
-        pip --version
-        pip list
-        
         
     - name: Configure Nginx
       run: |
