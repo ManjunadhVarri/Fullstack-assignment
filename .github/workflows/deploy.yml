@@ -33,14 +33,6 @@ jobs:
         pip install -r requirements.txt || { echo "Failed to install dependencies"; exit 1; }
 
 
-    - name: Check Python and Pip Versions
-      run: |
-        source venv/bin/activate
-        python --version
-        pip --version
-        pip list
-
-
     
     - name: Build and deploy Django
       run: |
@@ -53,6 +45,15 @@ jobs:
         python manage.py makemigrations
         python manage.py migrate
         pip install gunicorn
+
+
+    - name: Check Python and Pip Versions
+      run: |
+        source venv/bin/activate
+        python --version
+        pip --version
+        pip list
+        
         
     - name: Configure Nginx
       run: |
