@@ -18,6 +18,14 @@ jobs:
       with:
         python-version: '3.x'
 
+    - name: Create requirements.txt if missing
+      run: |
+        cd fullstack-assignment-main/backend
+        if [ ! -f requirements.txt ]; then
+          echo "Creating requirements.txt"
+          pip freeze > requirements.txt
+        fi
+
     - name: Install Python dependencies
       run: |
         cd fullstack-assignment-main/backend
