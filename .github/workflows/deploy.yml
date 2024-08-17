@@ -42,6 +42,7 @@ jobs:
         python3 -m venv venv
         source venv/bin/activate
         pip freeze > requirements.txt
+        pip install -r requirements.txt
         python3 -m pip install --upgrade pip
         pip install django
         
@@ -68,7 +69,7 @@ jobs:
           python manage.py makemigrations
           python manage.py migrate
           pip install gunicorn
-          gunicorn --bind 0.0.0.0:8000 fullstack_assignment.wsgi:application &
+          
     - name: Configure Nginx
       run: |
          sudo sed -i '/^server_names_hash_bucket_size/d' /etc/nginx/nginx.conf
